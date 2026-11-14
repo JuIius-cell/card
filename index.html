@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для тебя 🤍</title>
+    <title>Site</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
@@ -19,12 +19,12 @@
             align-items: center;
             height: 100vh;
             overflow: hidden;
-            /* Начальный стиль: обычный белый сайт */
+    
             background-color: #ffffff;
             color: #222222;
         }
 
-        /* Когда переходим на вайб-режим */
+
         body.gradient-mode {
             background: linear-gradient(135deg, #ff758c, #ff7eb3, #a1c4fd);
             background-size: 200% 200%;
@@ -96,7 +96,7 @@
             display: none !important;
         }
 
-        /* Конверт/Открытка */
+
         .envelope-box {
             cursor: pointer;
             padding: 20px;
@@ -112,7 +112,7 @@
             100% { transform: translateY(-10px); }
         }
 
-        /* Текст письма с плавной анимацией появления */
+
         .letter-content {
             font-size: 14.5px;
             line-height: 1.5;
@@ -144,7 +144,7 @@
 </head>
 <body>
 
-    <!-- Шаг 1: Обычный белый сайт, проверка имени -->
+
     <div class="card" id="step-name">
         <h2>Привет! 👋</h2>
         <p>Как тебя зовут?</p>
@@ -152,13 +152,13 @@
         <button onclick="checkName()">Далее</button>
     </div>
 
-    <!-- Если имя не то -->
+
     <div class="card hidden" id="step-denied">
         <h2>Ошибка</h2>
         <p>Иди нафик, я ищу Аню! 🦝</p>
     </div>
 
-    <!-- Шаг 2: РЕЗКИЙ ПЕРЕХОД НА ГРАДИЕНТ И ВОПРОСЫ -->
+
     <div class="card hidden" id="step-question-1">
         <h2>Секретный вопрос 🌸</h2>
         <p>Я хочу спросить, ценишь ли ты меня?</p>
@@ -173,7 +173,7 @@
         <button onclick="nextStep('step-envelope')">Абсолютно всегда 🤍</button>
     </div>
 
-    <!-- Шаг 3: Конверт / Открыть открытку -->
+
     <div class="card hidden" id="step-envelope" onclick="openLetter()">
         <h2>Для тебя 💌</h2>
         <div class="envelope-box">
@@ -200,7 +200,7 @@
             let validNames = ['аня', 'анна', 'анька', 'анюта', 'аннушка'];
 
             if (validNames.includes(name)) {
-                // ПЕРЕХОДИМ В РЕЖИМ ГРАДИЕНТА
+           
                 document.body.classList.add('gradient-mode');
                 document.getElementById('step-name').classList.add('hidden');
                 document.getElementById('step-question-1').classList.remove('hidden');
