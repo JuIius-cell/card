@@ -3,132 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для Анюты 💖</title>
+    <title>Для тебя 🤍</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        * {
+            box-sizing: border-box;
+            transition: all 0.4s ease;
+        }
         body {
-            background: linear-gradient(135deg, #ff758c, #ff7eb3);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: white;
-            text-align: center;
-            padding: 20px;
             margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             overflow: hidden;
+            /* Начальный стиль: обычный белый сайт */
+            background-color: #ffffff;
+            color: #222222;
         }
+
+        /* Когда переходим на вайб-режим */
+        body.gradient-mode {
+            background: linear-gradient(135deg, #ff758c, #ff7eb3, #a1c4fd);
+            background-size: 200% 200%;
+            animation: gradientBG 8s ease infinite;
+            color: white;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
-            border-radius: 24px;
+            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            max-width: 320px;
+            max-width: 340px;
             width: 100%;
-            box-sizing: border-box;
-            animation: fadeIn 0.5s ease-in-out;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        body.gradient-mode .card {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         }
+
         input {
             width: 100%;
-            padding: 14px;
-            border-radius: 25px;
-            border: none;
+            padding: 12px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
             outline: none;
             text-align: center;
             font-size: 16px;
             margin-top: 15px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-            box-sizing: border-box;
-        }
-        button {
             background: #fff;
-            color: #ff477e;
+            color: #333;
+        }
+
+        button {
+            background: #222;
+            color: #fff;
             border: none;
             padding: 12px 25px;
-            border-radius: 25px;
+            border-radius: 20px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             margin-top: 15px;
             width: 100%;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
+
         button:active {
-            transform: scale(0.95);
+            transform: scale(0.96);
         }
+
+        body.gradient-mode button {
+            background: #fff;
+            color: #ff477e;
+        }
+
         .hidden {
             display: none !important;
         }
-        .heart {
-            font-size: 60px;
-            animation: pulse 1s infinite alternate;
-            margin-bottom: 10px;
+
+        /* Конверт/Открытка */
+        .envelope-box {
+            cursor: pointer;
+            padding: 20px;
         }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.2); }
+
+        .envelope {
+            font-size: 70px;
+            animation: bounce 1.5s infinite alternate;
         }
-        h2 {
-            margin-top: 0;
-            font-size: 24px;
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
         }
-        p {
+
+        /* Текст письма с плавной анимацией появления */
+        .letter-content {
+            font-size: 14.5px;
+            line-height: 1.5;
+            text-align: left;
+            max-height: 380px;
+            overflow-y: auto;
+            padding-right: 5px;
+            animation: openLetter 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes openLetter {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .signature {
+            margin-top: 15px;
+            text-align: right;
+            font-weight: bold;
             font-size: 16px;
-            line-height: 1.4;
         }
     </style>
 </head>
 <body>
 
-    <!-- Шаг 1: Проверка имени -->
+    <!-- Шаг 1: Обычный белый сайт, проверка имени -->
     <div class="card" id="step-name">
         <h2>Привет! 👋</h2>
         <p>Как тебя зовут?</p>
         <input type="text" id="nameInput" placeholder="Введи имя...">
-        <button onclick="checkName()">Далее ✨</button>
+        <button onclick="checkName()">Далее</button>
     </div>
 
     <!-- Если имя не то -->
     <div class="card hidden" id="step-denied">
-        <h2>⛔ Ошибка!</h2>
+        <h2>Ошибка</h2>
         <p>Иди нафик, я ищу Аню! 🦝</p>
     </div>
 
-    <!-- Шаг 2: Главный вопрос из TikTok -->
-    <div class="card hidden" id="step-question">
+    <!-- Шаг 2: РЕЗКИЙ ПЕРЕХОД НА ГРАДИЕНТ И ВОПРОСЫ -->
+    <div class="card hidden" id="step-question-1">
         <h2>Секретный вопрос 🌸</h2>
         <p>Я хочу спросить, ценишь ли ты меня?</p>
-        <button onclick="nextStep()">Да 💖</button>
-        <button onclick="nextStep()">Да (но очень сильно) 🥰</button>
+        <button onclick="nextStep('step-question-2')">Да 💖</button>
+        <button onclick="nextStep('step-question-2')">Да (но очень сильно) 🥰</button>
     </div>
 
-    <!-- Шаг 3: Финал с сердечком -->
-    <div class="card hidden" id="step-love">
-        <div class="heart">💖</div>
-        <h2>И я тебя очень ценю!</h2>
-        <p>Ты у меня самая лучшая! ✨</p>
+    <div class="card hidden" id="step-question-2">
+        <h2>Идем дальше ✨</h2>
+        <p>А ты помнишь, как сильно ты мне дорога?</p>
+        <button onclick="nextStep('step-envelope')">Конечно помню 💕</button>
+        <button onclick="nextStep('step-envelope')">Абсолютно всегда 🤍</button>
+    </div>
+
+    <!-- Шаг 3: Конверт / Открыть открытку -->
+    <div class="card hidden" id="step-envelope" onclick="openLetter()">
+        <h2>Для тебя 💌</h2>
+        <div class="envelope-box">
+            <div class="envelope">✉️</div>
+            <p style="font-size: 14px; opacity: 0.9; margin-top: 5px;">Нажми, чтобы открыть открытку</p>
+        </div>
+    </div>
+
+    <!-- Шаг 4: Финальное послание -->
+    <div class="card hidden" id="step-final">
+        <div class="letter-content">
+            Знаешь, ты самое лучшее что произошло со мной за этот год, и я хотел бы что бы ты это знала, запомнила и помнила всегда, в любой момент даже если я не буду рядом, даже если я буду за тысячи километров, даже если я буду грустить, я всегда тебя поддержу, всегда буду за тебя, мы с тобой обязательно должны пройти через все, остаться вместе поддерживать связь, и что бы не случилось, я всегда буду рядом, просто представляй это..<br><br>
+            Я тебя очень сильно люблю ❤️
+            <div class="signature">Твой Илюша 🥰</div>
+        </div>
     </div>
 
     <script>
         let tg = window.Telegram.WebApp;
-        tg.expand(); // Разворачиваем на весь экран
+        tg.expand();
 
         function checkName() {
             let name = document.getElementById('nameInput').value.trim().toLowerCase();
             let validNames = ['аня', 'анна', 'анька', 'анюта', 'аннушка'];
 
             if (validNames.includes(name)) {
+                // ПЕРЕХОДИМ В РЕЖИМ ГРАДИЕНТА
+                document.body.classList.add('gradient-mode');
                 document.getElementById('step-name').classList.add('hidden');
-                document.getElementById('step-question').classList.remove('hidden');
+                document.getElementById('step-question-1').classList.remove('hidden');
             } else {
                 document.getElementById('step-name').classList.add('hidden');
                 document.getElementById('step-denied').classList.remove('hidden');
@@ -139,9 +214,18 @@
             }
         }
 
-        function nextStep() {
-            document.getElementById('step-question').classList.add('hidden');
-            document.getElementById('step-love').classList.remove('hidden');
+        function nextStep(nextId) {
+            document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
+            document.getElementById(nextId).classList.remove('hidden');
+            
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+        }
+
+        function openLetter() {
+            document.getElementById('step-envelope').classList.add('hidden');
+            document.getElementById('step-final').classList.remove('hidden');
             
             if (tg.HapticFeedback) {
                 tg.HapticFeedback.notificationOccurred('success');
