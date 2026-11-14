@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Для Анюты 💖</title>
-    <!-- Подключаем Telegram Web App скрипт -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -23,16 +22,22 @@
         }
         .card {
             background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
             padding: 30px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             max-width: 320px;
             width: 100%;
+            box-sizing: border-box;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         input {
-            width: 80%;
-            padding: 12px;
+            width: 100%;
+            padding: 14px;
             border-radius: 25px;
             border: none;
             outline: none;
@@ -41,6 +46,7 @@
             margin-top: 15px;
             background: rgba(255, 255, 255, 0.9);
             color: #333;
+            box-sizing: border-box;
         }
         button {
             background: #fff;
@@ -52,6 +58,7 @@
             font-weight: bold;
             cursor: pointer;
             margin-top: 15px;
+            width: 100%;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             transition: 0.2s;
         }
@@ -59,40 +66,52 @@
             transform: scale(0.95);
         }
         .hidden {
-            display: none;
+            display: none !important;
         }
         .heart {
-            font-size: 50px;
+            font-size: 60px;
             animation: pulse 1s infinite alternate;
+            margin-bottom: 10px;
         }
         @keyframes pulse {
             0% { transform: scale(1); }
-            100% { transform: scale(1.15); }
+            100% { transform: scale(1.2); }
+        }
+        h2 {
+            margin-top: 0;
+            font-size: 24px;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.4;
         }
     </style>
 </head>
 <body>
 
+    <!-- Шаг 1: Проверка имени -->
     <div class="card" id="step-name">
         <h2>Привет! 👋</h2>
         <p>Как тебя зовут?</p>
         <input type="text" id="nameInput" placeholder="Введи имя...">
-        <br>
-        <button onclick="checkName()">Далее</button>
+        <button onclick="checkName()">Далее ✨</button>
     </div>
 
+    <!-- Если имя не то -->
     <div class="card hidden" id="step-denied">
         <h2>⛔ Ошибка!</h2>
         <p>Иди нафик, я ищу Аню! 🦝</p>
     </div>
 
+    <!-- Шаг 2: Главный вопрос из TikTok -->
     <div class="card hidden" id="step-question">
         <h2>Секретный вопрос 🌸</h2>
-        <p>Ценишь ли ты меня?</p>
-        <button onclick="nextStep()">Да</button>
-        <button onclick="nextStep()">Да (но по-другому)</button>
+        <p>Я хочу спросить, ценишь ли ты меня?</p>
+        <button onclick="nextStep()">Да 💖</button>
+        <button onclick="nextStep()">Да (но очень сильно) 🥰</button>
     </div>
 
+    <!-- Шаг 3: Финал с сердечком -->
     <div class="card hidden" id="step-love">
         <div class="heart">💖</div>
         <h2>И я тебя очень ценю!</h2>
@@ -105,7 +124,6 @@
 
         function checkName() {
             let name = document.getElementById('nameInput').value.trim().toLowerCase();
-            // Проверяем различные вариации имени
             let validNames = ['аня', 'анна', 'анька', 'анюта', 'аннушка'];
 
             if (validNames.includes(name)) {
@@ -115,12 +133,16 @@
                 document.getElementById('step-name').classList.add('hidden');
                 document.getElementById('step-denied').classList.remove('hidden');
             }
+
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
+            }
         }
 
         function nextStep() {
             document.getElementById('step-question').classList.add('hidden');
             document.getElementById('step-love').classList.remove('hidden');
-            // Можно завибрировать телефоном, если поддерживается
+            
             if (tg.HapticFeedback) {
                 tg.HapticFeedback.notificationOccurred('success');
             }
