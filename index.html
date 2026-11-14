@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для Анюты 💖</title>
+    <!-- Подключаем Telegram Web App скрипт -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            max-width: 320px;
+            width: 100%;
+        }
+        input {
+            width: 80%;
+            padding: 12px;
+            border-radius: 25px;
+            border: none;
+            outline: none;
+            text-align: center;
+            font-size: 16px;
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+        button {
+            background: #fff;
+            color: #ff477e;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: 0.2s;
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        .hidden {
+            display: none;
+        }
+        .heart {
+            font-size: 50px;
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="step-name">
+        <h2>Привет! 👋</h2>
+        <p>Как тебя зовут?</p>
+        <input type="text" id="nameInput" placeholder="Введи имя...">
+        <br>
+        <button onclick="checkName()">Далее</button>
+    </div>
+
+    <div class="card hidden" id="step-denied">
+        <h2>⛔ Ошибка!</h2>
+        <p>Иди нафик, я ищу Аню! 🦝</p>
+    </div>
+
+    <div class="card hidden" id="step-question">
+        <h2>Секретный вопрос 🌸</h2>
+        <p>Ценишь ли ты меня?</p>
+        <button onclick="nextStep()">Да</button>
+        <button onclick="nextStep()">Да (но по-другому)</button>
+    </div>
+
+    <div class="card hidden" id="step-love">
+        <div class="heart">💖</div>
+        <h2>И я тебя очень ценю!</h2>
+        <p>Ты у меня самая лучшая! ✨</p>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand(); // Разворачиваем на весь экран
+
+        function checkName() {
+            let name = document.getElementById('nameInput').value.trim().toLowerCase();
+            // Проверяем различные вариации имени
+            let validNames = ['аня', 'анна', 'анька', 'анюта', 'аннушка'];
+
+            if (validNames.includes(name)) {
+                document.getElementById('step-name').classList.add('hidden');
+                document.getElementById('step-question').classList.remove('hidden');
+            } else {
+                document.getElementById('step-name').classList.add('hidden');
+                document.getElementById('step-denied').classList.remove('hidden');
+            }
+        }
+
+        function nextStep() {
+            document.getElementById('step-question').classList.add('hidden');
+            document.getElementById('step-love').classList.remove('hidden');
+            // Можно завибрировать телефоном, если поддерживается
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.notificationOccurred('success');
+            }
+        }
+    </script>
+</body>
+</html>
