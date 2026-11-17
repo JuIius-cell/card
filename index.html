@@ -3,102 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Presťahovanie - TUKE</title>
+    <title>eSlužby – Presťahovanie a zmena pobytu</title>
     <style>
         :root {
-            --bg-color: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-main: #212529;
-            --text-muted: #6c757d;
-            --primary: #0d6efd;
-            --primary-hover: #0b5ed7;
-            --border-color: #dee2e6;
-            --error-color: #dc3545;
-            --success-text: #0f5132;
+            --bg-page: #f1f5f9;
+            --bg-surface: #ffffff;
+            --primary: #0052cc;
+            --primary-hover: #0747a6;
+            --primary-light: #e6f0ff;
+            --text-main: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border-color: #cbd5e1;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-page);
             color: var(--text-main);
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
             min-height: 100vh;
-            padding: 20px;
+        }
+
+        header {
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        .logo-badge {
+            background: var(--primary);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .nav-links span {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .nav-links span:hover {
+            color: var(--primary);
+        }
+
+        .user-pill {
+            background: var(--bg-page);
+            border: 1px solid var(--border-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .stepper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 32px;
+            width: 100%;
+            max-width: 720px;
+        }
+
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .step-indicator.active {
+            color: var(--primary);
+        }
+
+        .step-indicator.completed {
+            color: var(--success-color);
+        }
+
+        .step-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid currentColor;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .step-indicator.active .step-circle {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        .step-indicator.completed .step-circle {
+            background: var(--success-color);
+            color: #fff;
+            border-color: var(--success-color);
+        }
+
+        .step-line {
+            height: 2px;
+            width: 40px;
+            background: var(--border-color);
         }
 
         .container {
             width: 100%;
-            max-width: 650px;
-            background: var(--card-bg);
+            max-width: 720px;
+            background: var(--bg-surface);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 40px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
-        .step {
+        .screen {
             display: none;
+            animation: fadeIn 0.25s ease;
         }
 
-        .step.active {
+        .screen.active {
             display: block;
         }
 
-        h1 {
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, #003d99 100%);
+            color: white;
+            padding: 28px;
+            border-radius: 12px;
+            margin-bottom: 28px;
+        }
+
+        .hero-banner h1 {
             font-size: 24px;
-            font-weight: 700;
             margin-bottom: 8px;
-            text-align: center;
         }
 
-        p.subtitle {
+        .hero-banner p {
             font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 32px;
-            text-align: center;
+            opacity: 0.9;
+            line-height: 1.5;
         }
 
-        .cards-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        h2.section-title {
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        p.section-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
             margin-bottom: 24px;
         }
 
-        .card {
+        .cards-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        .service-card {
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 16px 20px;
+            border-radius: 10px;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             cursor: pointer;
             transition: all 0.2s ease;
-            background: #fff;
         }
 
-        .card:hover {
+        .service-card:hover {
             border-color: var(--primary);
-            box-shadow: 0 2px 8px rgba(13, 110, 253, 0.1);
+            background-color: var(--primary-light);
+            transform: translateY(-1px);
         }
 
-        .card h3 {
+        .service-info h3 {
             font-size: 16px;
             margin-bottom: 4px;
+            color: var(--text-main);
         }
 
-        .card p {
+        .service-info p {
             font-size: 13px;
-            color: var(--text-muted);
+            color: var(--text-secondary);
+        }
+
+        .arrow-icon {
+            font-size: 18px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         label {
@@ -106,193 +266,470 @@
             font-size: 13px;
             font-weight: 600;
             margin-bottom: 6px;
+            color: var(--text-main);
         }
 
-        input, select {
+        input[type="text"], select {
             width: 100%;
-            padding: 10px 14px;
+            padding: 11px 14px;
             border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 14px;
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.2s;
+            background: #fff;
         }
 
-        input:focus, select:focus {
+        input[type="text"]:focus, select:focus {
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.12);
         }
 
         input.error {
             border-color: var(--error-color);
+            background-color: var(--error-bg);
         }
 
-        .error-message {
+        .error-text {
             font-size: 12px;
             color: var(--error-color);
-            margin-top: 5px;
+            margin-top: 6px;
             display: none;
+            font-weight: 500;
         }
 
-        .error-message.visible {
+        .error-text.visible {
             display: block;
+        }
+
+        .checkbox-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .checkbox-item:hover {
+            background: var(--bg-page);
+        }
+
+        .checkbox-item input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .file-dropzone {
+            border: 2px dashed var(--border-color);
+            border-radius: 10px;
+            padding: 24px;
+            text-align: center;
+            background: var(--bg-page);
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .file-dropzone:hover {
+            border-color: var(--primary);
+        }
+
+        .file-dropzone p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
         }
 
         .btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 15px;
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
+            border: none;
+            transition: all 0.2s;
             text-align: center;
-            text-decoration: none;
-            margin-top: 20px;
         }
 
-        .btn:hover {
-            background-color: var(--primary-hover);
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
         }
 
-        .success-box {
-            text-align: center;
-            padding: 20px 0;
+        .btn-primary:hover {
+            background: var(--primary-hover);
         }
 
-        .success-box h2 {
-            color: var(--success-text);
-            margin-bottom: 12px;
+        .btn-secondary {
+            background: var(--bg-page);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
         }
 
-        .success-box p {
-            color: var(--text-muted);
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .summary-card {
+            background: var(--bg-page);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 18px;
+            margin: 20px 0;
+            text-align: left;
             font-size: 14px;
+        }
+
+        .summary-card div {
             margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .summary-card div:last-child {
+            margin-bottom: 0;
+        }
+
+        .success-header {
+            text-align: center;
+            padding: 16px 0;
+        }
+
+        .success-badge {
+            display: inline-block;
+            background: var(--success-bg);
+            color: var(--success-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 14px;
+        }
+
+        footer {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-color);
+            padding: 20px 32px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 600px) {
+            .form-row { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .container { padding: 24px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        
-        <div id="step-main" class="step active">
-            <h1>Presťahovanie</h1>
-            <p class="subtitle">Vyberte si úkon pre zmenu údajov</p>
-            <div class="cards-grid">
-                <div class="card" onclick="goToStep('step-krok1')">
-                    <h3>Zmena trvalého pobytu</h3>
-                    <p>Zaregistrujte si novú adresu trvalého pobytu v meste.</p>
-                </div>
-                <div class="card" onclick="goToStep('step-krok1')">
-                    <h3>Odvoz odpadu a poplatky</h3>
-                    <p>Nahlásenie zmeny pre výpočet komunálneho odpadu.</p>
-                </div>
-                <div class="card" onclick="goToStep('step-krok1')">
-                    <h3>Súvisiace energie a služby</h3>
-                    <p>Oznámenie zmeny adresy pre dodávateľov.</p>
-                </div>
+    <header>
+        <div class="logo" onclick="resetApp()">
+            <span class="logo-badge">SK</span>
+            <span>Portál Občana</span>
+        </div>
+        <div class="nav-links">
+            <span onclick="resetApp()">Životné situácie</span>
+            <span>Elektronická schránka</span>
+            <span>Pomoc a podpora</span>
+        </div>
+        <div class="user-pill">Občan: Prihlásený</div>
+    </header>
+
+    <main>
+        <div class="stepper" id="stepper">
+            <div class="step-indicator active" id="ind-1">
+                <div class="step-circle">1</div>
+                <span>Výber úkonu</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-indicator" id="ind-2">
+                <div class="step-circle">2</div>
+                <span>Nová adresa</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-indicator" id="ind-3">
+                <div class="step-circle">3</div>
+                <span>Služby a doklady</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-indicator" id="ind-4">
+                <div class="step-circle">4</div>
+                <span>Potvrdenie</span>
             </div>
         </div>
 
-        <div id="step-krok1" class="step">
-            <h1>Krok 1: Nová adresa pobytu</h1>
-            <p class="subtitle">Zadajte údaje o vašom novom bydlisku</p>
+        <div class="container">
             
-            <div class="form-group">
-                <label>Mesto / Obec</label>
-                <input type="text" id="city" placeholder="Napr. Košice">
+            <div id="screen-main" class="screen active">
+                <div class="hero-banner">
+                    <h1>Presťahovanie a zmena pobytu</h1>
+                    <p>Vybavte všetky administratívne úkony spojené so zmenou adresy elektronicky na jednom mieste bez návštevy úradov.</p>
+                </div>
+
+                <h2 class="section-title">Vyberte počiatočný úkon</h2>
+                <p class="section-desc">Kliknutím na kartu spustíte elektronického sprievodcu</p>
+
+                <div class="cards-grid">
+                    <div class="service-card" onclick="startFlow('Zmena trvalého pobytu')">
+                        <div class="service-info">
+                            <h3>Zmena trvalého pobytu</h3>
+                            <p>Elektronické ohlásenie nového trvalého alebo prechodného pobytu v obci.</p>
+                        </div>
+                        <span class="arrow-icon">→</span>
+                    </div>
+
+                    <div class="service-card" onclick="startFlow('Odvoz odpadu a miestne poplatky')">
+                        <div class="service-info">
+                            <h3>Odvoz odpadu a miestne poplatky</h3>
+                            <p>Aktualizácia údajov pre výpočet poplatku za komunálny odpad.</p>
+                        </div>
+                        <span class="arrow-icon">→</span>
+                    </div>
+
+                    <div class="service-card" onclick="startFlow('Oznámenie pre energie a dodávateľov')">
+                        <div class="service-info">
+                            <h3>Oznámenie pre energie a dodávateľov</h3>
+                            <p>Hromadná zmena korešpondenčnej adresy pre elektrinu, plyn a vodu.</p>
+                        </div>
+                        <span class="arrow-icon">→</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>Ulica a číslo</label>
-                <input type="text" id="street" placeholder="Napr. Jedlíkova 13">
+            <div id="screen-krok1" class="screen">
+                <h2 class="section-title">Krok 1: Údaje o novom bydlisku</h2>
+                <p class="section-desc">Vyplňte presnú adresu vášho nového pobytu na území SR</p>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Mesto / Obec *</label>
+                        <input type="text" id="city" placeholder="Napr. Košice">
+                        <div id="city-error" class="error-text">Zadajte názov mesta alebo obce.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>PSČ *</label>
+                        <input type="text" id="zip" placeholder="Napr. 04011">
+                        <div id="zip-error" class="error-text">Neplatné PSČ. Zadajte 5 číslic (napr. 04011).</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Ulica a orientačné/súpisné číslo *</label>
+                    <input type="text" id="street" placeholder="Napr. Jedlíkova 13">
+                    <div id="street-error" class="error-text">Zadajte ulicu a číslo domu.</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Druh pobytu</label>
+                    <select id="residence-type">
+                        <option value="Trvalý pobyt">Trvalý pobyt</option>
+                        <option value="Prechodný pobyt">Prechodný pobyt</option>
+                    </select>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="goToScreen(1)">Späť</button>
+                    <button class="btn btn-primary" onclick="validateStep1()">Pokračovať na výber služieb</button>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>PSČ</label>
-                <input type="text" id="zip" placeholder="Napr. 04011">
-                <div id="zip-error" class="error-message">Neplatný formát PSČ. Zadajte presne 5 číslic.</div>
+            <div id="screen-krok2" class="screen">
+                <h2 class="section-title">Krok 2: Súvisiace služby a prílohy</h2>
+                <p class="section-desc">Zvoľte úkony, ktoré chcete vybaviť automaticky v rámci jednej žiadosti</p>
+
+                <div class="checkbox-list">
+                    <label class="checkbox-item">
+                        <input type="checkbox" checked id="srv-1">
+                        <span>Ohlásenie zmeny pobytu v registri obyvateľov</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" checked id="srv-2">
+                        <span>Prehlásenie poplatkov za komunálny odpad</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="srv-3">
+                        <span>Oznámenie zmeny adresy zdravotnej poisťovni</span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>Príloha: Nájomná zmluva alebo list vlastníctva (voliteľné)</label>
+                    <div class="file-dropzone" onclick="document.getElementById('file-input').click()">
+                        <p id="file-label">Kliknite sem pre nahratie dokumentu vo formáte PDF alebo JPG</p>
+                        <input type="file" id="file-input" style="display: none;" onchange="updateFileName()">
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="goToScreen(2)">Späť na adresu</button>
+                    <button class="btn btn-primary" onclick="submitApplication()">Odoslať elektronickú žiadosť</button>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>Druh pobytu</label>
-                <select>
-                    <option>Trvalý pobyt</option>
-                    <option>Prechodný pobyt</option>
-                </select>
+            <div id="screen-success" class="screen">
+                <div class="success-header">
+                    <span class="success-badge">✓ Úspešne zaevidované</span>
+                    <h2 class="section-title">Žiadosť bola úspešne odoslaná!</h2>
+                    <p class="section-desc">Potvrdenie bolo odoslané do vašej elektronickej schránky.</p>
+                </div>
+
+                <div class="summary-card">
+                    <div>
+                        <span>Identifikátor podania:</span>
+                        <strong id="res-id">#MOV-2026-8412</strong>
+                    </div>
+                    <div>
+                        <span>Nová adresa:</span>
+                        <strong id="res-address">Košice, Jedlíkova 13</strong>
+                    </div>
+                    <div>
+                        <span>Druh pobytu:</span>
+                        <strong id="res-type">Trvalý pobyt</strong>
+                    </div>
+                    <div>
+                        <span>Priložený dokument:</span>
+                        <strong id="res-file">Bez prílohy</strong>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="resetApp()">Späť na úvodnú stránku</button>
+                </div>
             </div>
 
-            <button class="btn" onclick="validateAndProceed()">Pokračovať na výber služieb</button>
         </div>
+    </main>
 
-        <div id="step-krok2" class="step">
-            <h1>Krok 2: Výber služieb a doklady</h1>
-            <p class="subtitle">Potvrďte požadované úkony a voliteľne priložte zmluvu</p>
-
-            <div class="form-group">
-                <label>Zvolená služba</label>
-                <input type="text" value="Hlásenie trvalého pobytu" readonly>
-            </div>
-
-            <div class="form-group">
-                <label>Nahratie nájomnej zmluvy (PDF / JPG) – voliteľné</label>
-                <input type="file" id="file-input">
-            </div>
-
-            <button class="btn" onclick="submitForm()">Odoslať žiadosť</button>
-        </div>
-
-        <div id="step-success" class="step">
-            <div class="success-box">
-                <h2>Žiadosť bola úspešne odoslaná!</h2>
-                <p>Vaše údaje boli úspešne zaregistrované v systéme.</p>
-                <p id="request-id">Identifikátor žiadosti: #MOV-2026-8942</p>
-            </div>
-            <button class="btn" onclick="resetApp()">Späť na hlavnú stránku</button>
-        </div>
-
-    </div>
+    <footer>
+        © 2026 Portál elektronických služieb verejnej správy • Projekt TUKE
+    </footer>
 
     <script>
-        function goToStep(stepId) {
-            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-            document.getElementById(stepId).classList.add('active');
+        let selectedService = '';
+
+        function startFlow(serviceName) {
+            selectedService = serviceName;
+            goToScreen(2);
         }
 
-        function validateAndProceed() {
-            const zipInput = document.getElementById('zip');
-            const zipError = document.getElementById('zip-error');
-            const zipVal = zipInput.value.trim();
+        function goToScreen(stepNumber) {
+            const screens = ['screen-main', 'screen-krok1', 'screen-krok2', 'screen-success'];
+            screens.forEach(id => document.getElementById(id).classList.remove('active'));
+            document.getElementById(screens[stepNumber - 1]).classList.add('active');
 
-            if (zipVal.length !== 5 || isNaN(zipVal)) {
-                zipInput.classList.add('error');
-                zipError.classList.add('visible');
-                return;
+            for (let i = 1; i <= 4; i++) {
+                const ind = document.getElementById('ind-' + i);
+                ind.classList.remove('active', 'completed');
+                if (i < stepNumber) {
+                    ind.classList.add('completed');
+                } else if (i === stepNumber) {
+                    ind.classList.add('active');
+                }
+            }
+        }
+
+        function validateStep1() {
+            const city = document.getElementById('city');
+            const zip = document.getElementById('zip');
+            const street = document.getElementById('street');
+
+            let isValid = true;
+
+            if (city.value.trim() === '') {
+                city.classList.add('error');
+                document.getElementById('city-error').classList.add('visible');
+                isValid = false;
+            } else {
+                city.classList.remove('error');
+                document.getElementById('city-error').classList.remove('visible');
             }
 
-            zipInput.classList.remove('error');
-            zipError.classList.remove('visible');
-            goToStep('step-krok2');
+            const cleanZip = zip.value.replace(/\s+/g, '');
+            if (cleanZip.length !== 5 || isNaN(cleanZip)) {
+                zip.classList.add('error');
+                document.getElementById('zip-error').classList.add('visible');
+                isValid = false;
+            } else {
+                zip.classList.remove('error');
+                document.getElementById('zip-error').classList.remove('visible');
+            }
+
+            if (street.value.trim() === '') {
+                street.classList.add('error');
+                document.getElementById('street-error').classList.add('visible');
+                isValid = false;
+            } else {
+                street.classList.remove('error');
+                document.getElementById('street-error').classList.remove('visible');
+            }
+
+            if (isValid) {
+                goToScreen(3);
+            }
         }
 
-        function submitForm() {
+        function updateFileName() {
+            const fileInput = document.getElementById('file-input');
+            const fileLabel = document.getElementById('file-label');
+            if (fileInput.files.length > 0) {
+                fileLabel.innerText = 'Priložený súbor: ' + fileInput.files[0].name;
+                fileLabel.style.color = '#0052cc';
+                fileLabel.style.fontWeight = '600';
+            }
+        }
+
+        function submitApplication() {
+            const cityVal = document.getElementById('city').value.trim();
+            const streetVal = document.getElementById('street').value.trim();
+            const zipVal = document.getElementById('zip').value.trim();
+            const typeVal = document.getElementById('residence-type').value;
+            const fileInput = document.getElementById('file-input');
+
             const randomId = '#MOV-2026-' + Math.floor(1000 + Math.random() * 9000);
-            document.getElementById('request-id').innerText = 'Identifikátor žiadosti: ' + randomId;
-            goToStep('step-success');
+            document.getElementById('res-id').innerText = randomId;
+            document.getElementById('res-address').innerText = `${streetVal}, ${zipVal} ${cityVal}`;
+            document.getElementById('res-type').innerText = typeVal;
+            document.getElementById('res-file').innerText = fileInput.files.length > 0 ? fileInput.files[0].name : 'Bez prílohy';
+
+            goToScreen(4);
         }
 
         function resetApp() {
             document.getElementById('city').value = '';
-            document.getElementById('street').value = '';
             document.getElementById('zip').value = '';
-            document.getElementById('zip').classList.remove('error');
-            document.getElementById('zip-error').classList.remove('visible');
+            document.getElementById('street').value = '';
             document.getElementById('file-input').value = '';
-            goToStep('step-main');
+            document.getElementById('file-label').innerText = 'Kliknite sem pre nahratie dokumentu vo formáte PDF alebo JPG';
+            document.getElementById('file-label').style.color = '';
+            document.getElementById('file-label').style.fontWeight = '';
+
+            ['city', 'zip', 'street'].forEach(id => {
+                document.getElementById(id).classList.remove('error');
+                document.getElementById(id + '-error').classList.remove('visible');
+            });
+
+            goToScreen(1);
         }
     </script>
 </body>
