@@ -14,7 +14,6 @@
             --primary-hover: #0b5ed7;
             --border-color: #dee2e6;
             --error-color: #dc3545;
-            --success-bg: #d1e7dd;
             --success-text: #0f5132;
         }
 
@@ -205,17 +204,17 @@
             
             <div class="form-group">
                 <label>Mesto / Obec</label>
-                <input type="text" id="city" value="Košice">
+                <input type="text" id="city" placeholder="Napr. Košice">
             </div>
 
             <div class="form-group">
                 <label>Ulica a číslo</label>
-                <input type="text" id="street" value="Jedlíkova 13">
+                <input type="text" id="street" placeholder="Napr. Jedlíkova 13">
             </div>
 
             <div class="form-group">
-                <label>PSČ (Scenár B: zadajte nesprávne pre chybu, napr. 123)</label>
-                <input type="text" id="zip" value="04011">
+                <label>PSČ</label>
+                <input type="text" id="zip" placeholder="Napr. 04011">
                 <div id="zip-error" class="error-message">Neplatný formát PSČ. Zadajte presne 5 číslic.</div>
             </div>
 
@@ -232,17 +231,16 @@
 
         <div id="step-krok2" class="step">
             <h1>Krok 2: Výber služieb a doklady</h1>
-            <p class="subtitle">Potvrďte požadované úkony a priložte zmluvu</p>
+            <p class="subtitle">Potvrďte požadované úkony a voliteľne priložte zmluvu</p>
 
             <div class="form-group">
-                <label>Služba 1</label>
+                <label>Zvolená služba</label>
                 <input type="text" value="Hlásenie trvalého pobytu" readonly>
             </div>
 
             <div class="form-group">
-                <label>Nahratie nájomnej zmluvy (PDF / JPG)</label>
+                <label>Nahratie nájomnej zmluvy (PDF / JPG) – voliteľné</label>
                 <input type="file" id="file-input">
-                <div id="file-error" class="error-message">Chyba: Súbor nie je priložený.</div>
             </div>
 
             <button class="btn" onclick="submitForm()">Odoslať žiadosť</button>
@@ -251,7 +249,7 @@
         <div id="step-success" class="step">
             <div class="success-box">
                 <h2>Žiadosť bola úspešne odoslaná!</h2>
-                <p>Vaše údaje boli zaregistrované.</p>
+                <p>Vaše údaje boli úspešne zaregistrované v systéme.</p>
                 <p id="request-id">Identifikátor žiadosti: #MOV-2026-8942</p>
             </div>
             <button class="btn" onclick="resetApp()">Späť na hlavnú stránku</button>
@@ -282,26 +280,18 @@
         }
 
         function submitForm() {
-            const fileInput = document.getElementById('file-input');
-            const fileError = document.getElementById('file-error');
-
-            if (fileInput.files.length === 0) {
-                fileError.classList.add('visible');
-                return;
-            }
-
-            fileError.classList.remove('visible');
             const randomId = '#MOV-2026-' + Math.floor(1000 + Math.random() * 9000);
             document.getElementById('request-id').innerText = 'Identifikátor žiadosti: ' + randomId;
             goToStep('step-success');
         }
 
         function resetApp() {
-            document.getElementById('zip').value = '04011';
+            document.getElementById('city').value = '';
+            document.getElementById('street').value = '';
+            document.getElementById('zip').value = '';
             document.getElementById('zip').classList.remove('error');
             document.getElementById('zip-error').classList.remove('visible');
             document.getElementById('file-input').value = '';
-            document.getElementById('file-error').classList.remove('visible');
             goToStep('step-main');
         }
     </script>
